@@ -1,0 +1,138 @@
+version: 2
+
+# =============================================================================
+# _silver_models.yml  –  documentation and tests for all 10 silver models
+# =============================================================================
+
+models:
+
+  - name: slv_combined_channels
+    description: >
+      Union of all 5 channel histories (Phone, SMS, Chat, Email, Video).
+      Normalises column names: agent_hash_id → user_id,
+      final_outcome → engagement_status.  Adds modality (derived from source
+      table) and source_table columns.
+    columns:
+      - name: start_date
+        tests: [not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]
+      - name: modality
+        tests:
+          - accepted_values:
+              values: ['Phone', 'SMS', 'Chat', 'Email', 'Video']
+
+  - name: slv_acct_first_active
+    description: >
+      One row per account_id.  account_first_active is the earliest
+      start_date observed in slv_combined_channels.
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+      - name: account_first_active
+        tests: [not_null]
+
+  - name: slv_user_first_active
+    description: >
+      One row per (user_id, account_id).  user_first_active is the earliest
+      start_date for that user within their account.
+    columns:
+      - name: user_id
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]
+      - name: user_first_active
+        tests: [not_null]
+
+  - name: slv_usage_master
+    description: >
+      Daily per-user usage metrics (phone sessions, inbound phone minutes,
+      chat sessions, SLA-achieved sessions) enriched with account and user
+      first-active dates.
+    columns:
+      - name: date
+        tests: [not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_roll_29_day_usage
+    description: >
+      Rolling 7-day and 28-day activity window metrics per user per day.
+      active_days_last_7 and active_days_last_28 count distinct active dates.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: user_id
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_user_active_days
+    description: >
+      Account-level count of users bucketed by their activity depth in the
+      last-7 and last-28 day windows.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_daily_metrics
+    description: >
+      Account-level daily metrics with R7 and R28 rolling windows.
+      active_users, chat_usage, and users_active_1_day per window.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: window
+        tests:
+          - accepted_values:
+              values: ['R7', 'R28']
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_weekly_metrics
+    description: >
+      Account-level weekly metrics with R7 and R28 rolling windows.
+      Differs from daily_metrics by reporting users_active_4_7_days.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: window
+        tests:
+          - accepted_values:
+              values: ['R7', 'R28']
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_monthly_metrics
+    description: >
+      Account-level monthly metrics with R1, R7, and R28 rolling windows.
+      Reports video_usage and users_active_16plus_days.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: window
+        tests:
+          - accepted_values:
+              values: ['R1', 'R7', 'R28']
+      - name: account_id
+        tests: [not_null]
+
+  - name: slv_consolidated_usage
+    description: >
+      Cross-product consolidated phone usage across R1, R7, and R28 windows
+      per account per day.
+    columns:
+      - name: report_date
+        tests: [not_null]
+      - name: window
+        tests:
+          - accepted_values:
+              values: ['R1', 'R7', 'R28']
+      - name: account_id
+        tests: [not_null]

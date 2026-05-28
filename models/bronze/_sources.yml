@@ -1,0 +1,115 @@
+version: 2
+
+sources:
+  - name: ZOOM_AI_POC
+    description: "Raw interaction history tables in ZOOM_AI_POC.RAW"
+    database: ZOOM_AI_POC
+    schema: RAW
+
+    tables:
+      - name: phone_history
+        description: "Raw phone interaction records"
+        columns:
+          - name: record_id
+            description: "Unique record identifier"
+            tests: [not_null, unique]
+          - name: account_id
+            tests: [not_null]
+          - name: agent_hash_id
+            tests: [not_null]
+          - name: engagement_id
+            tests: [not_null]
+          - name: channel
+          - name: start_time
+            tests: [not_null]
+          - name: duration_sec
+          - name: direction
+            tests:
+              - accepted_values:
+                  values: ['Inbound', 'Outbound']
+          - name: final_outcome
+            tests:
+              - accepted_values:
+                  values: ['Answered', 'Missed', 'Resolved', 'Closed']
+          - name: sla_achieved
+          - name: _loaded_at
+
+      - name: sms_history
+        description: "Raw SMS interaction records"
+        columns:
+          - name: record_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests: [not_null]
+          - name: agent_hash_id
+            tests: [not_null]
+          - name: engagement_id
+            tests: [not_null]
+          - name: channel
+          - name: start_time
+            tests: [not_null]
+          - name: duration_sec
+          - name: direction
+          - name: final_outcome
+          - name: sla_achieved
+          - name: _loaded_at
+
+      - name: chat_history
+        description: "Raw chat interaction records"
+        columns:
+          - name: record_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests: [not_null]
+          - name: agent_hash_id
+            tests: [not_null]
+          - name: engagement_id
+            tests: [not_null]
+          - name: channel
+          - name: start_time
+            tests: [not_null]
+          - name: duration_sec
+          - name: direction
+          - name: final_outcome
+          - name: sla_achieved
+          - name: _loaded_at
+
+      - name: email_history
+        description: "Raw email interaction records"
+        columns:
+          - name: record_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests: [not_null]
+          - name: agent_hash_id
+            tests: [not_null]
+          - name: engagement_id
+            tests: [not_null]
+          - name: channel
+          - name: start_time
+            tests: [not_null]
+          - name: duration_sec
+          - name: direction
+          - name: final_outcome
+          - name: sla_achieved
+          - name: _loaded_at
+
+      - name: video_history
+        description: "Raw video interaction records"
+        columns:
+          - name: record_id
+            tests: [not_null, unique]
+          - name: account_id
+            tests: [not_null]
+          - name: agent_hash_id
+            tests: [not_null]
+          - name: engagement_id
+            tests: [not_null]
+          - name: channel
+          - name: start_time
+            tests: [not_null]
+          - name: duration_sec
+          - name: direction
+          - name: final_outcome
+          - name: sla_achieved
+          - name: _loaded_at

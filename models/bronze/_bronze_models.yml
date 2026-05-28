@@ -1,0 +1,75 @@
+version: 2
+
+# =============================================================================
+# _bronze_models.yml  –  documentation and tests for all 5 bronze models
+# =============================================================================
+
+models:
+
+  - name: brz_phone_history
+    description: "Bronze view over RAW.PHONE_HISTORY. Renames columns and enforces types."
+    columns:
+      - name: record_id
+        tests: [not_null, unique]
+      - name: account_id
+        tests: [not_null]
+      - name: start_time
+        tests: [not_null]
+      - name: direction
+        tests:
+          - accepted_values:
+              values: ['INBOUND', 'OUTBOUND']
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['PHONE_HISTORY']
+
+  - name: brz_sms_history
+    description: "Bronze view over RAW.SMS_HISTORY."
+    columns:
+      - name: record_id
+        tests: [not_null, unique]
+      - name: account_id
+        tests: [not_null]
+      - name: start_time
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['SMS_HISTORY']
+
+  - name: brz_chat_history
+    description: "Bronze view over RAW.CHAT_HISTORY."
+    columns:
+      - name: record_id
+        tests: [not_null, unique]
+      - name: account_id
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['CHAT_HISTORY']
+
+  - name: brz_email_history
+    description: "Bronze view over RAW.EMAIL_HISTORY."
+    columns:
+      - name: record_id
+        tests: [not_null, unique]
+      - name: account_id
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['EMAIL_HISTORY']
+
+  - name: brz_video_history
+    description: "Bronze view over RAW.VIDEO_HISTORY."
+    columns:
+      - name: record_id
+        tests: [not_null, unique]
+      - name: account_id
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['VIDEO_HISTORY']

@@ -1,0 +1,40 @@
+version: 2
+
+# =============================================================================
+# _gold_models.yml  –  documentation and tests for the Gold layer
+# =============================================================================
+
+models:
+
+  - name: gld_aggregate
+    description: >
+      Gold layer regional and segment aggregate.  One row per
+      (date, region, segment, is_licensed).  Consumers: dashboards,
+      executive reports, BI tools.
+      Region and segment are placeholder-derived until a proper account
+      dimension table is available.
+    columns:
+      - name: date
+        description: "Reporting date"
+        tests: [not_null]
+      - name: region
+        description: "Geographic region: NAMER, APAC, EMEA, LATAM"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['NAMER', 'APAC', 'EMEA', 'LATAM']
+      - name: segment
+        description: "Customer segment code (1–5)"
+        tests: [not_null]
+      - name: is_licensed
+        description: "True if accounts in this row hold a paid licence"
+        tests: [not_null]
+      - name: active_accounts
+        description: "Count of distinct active accounts"
+        tests: [not_null]
+      - name: active_users
+        description: "Sum of active users across accounts"
+      - name: phone_usage
+        description: "Total phone duration in minutes (R28 window)"
+      - name: users_active_16plus_days
+        description: "Users active 16 or more days in the last 28"
