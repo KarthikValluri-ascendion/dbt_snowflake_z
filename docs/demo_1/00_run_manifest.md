@@ -1,4 +1,4 @@
-# Run Manifest — Demo_Trail_1
+# Run Manifest — demo_1
 
 **Skill:** gold-parallel-pipeline (Grandfather orchestration)
 **Created:** 2026-06-01
@@ -7,7 +7,7 @@
 
 | Input | Value |
 |-------|-------|
-| Jira ticket | `Demo_Trail_1` |
+| Jira ticket | `demo_1` |
 | Existing gold table | `gld_aggregate` (`models/gold/gld_aggregate.sql`) |
 | New pre-computed raw table | `RAW.PRECOMPUTED_ACCOUNT_DAILY_USAGE` |
 | Raw table source resolution | source `ZOOM_AI_POC`, schema `RAW`, database via `{{ env_var('SNOWFLAKE_DATABASE','ZOOM_AI_POC') }}` (currently `ZOOM_AI_POC_V2` per `.dbt-env`) |

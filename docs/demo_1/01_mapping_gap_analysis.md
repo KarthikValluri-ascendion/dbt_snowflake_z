@@ -4,12 +4,12 @@
     §3 unmapped rows ↔ §5 Gap IDs (1:1, no orphans either direction)
     §3 transforms cite §4 BR IDs; §4 BRs list the §3 rows they serve
     §6 design items resolve §5 Gap IDs
-  Profiling source of truth: ZOOM_AI_POC_V2.PUBLIC.DEMO_TRAIL_1_PROFILE_RESULTS (no raw dump here).
+  Profiling source of truth: ZOOM_AI_POC_V2.PUBLIC.DEMO_1_PROFILE_RESULTS (no raw dump here).
 -->
 
-# Mapping & Gap Analysis Report — Demo_Trail_1
+# Mapping & Gap Analysis Report — demo_1
 **Parallel Gold_V2 rebuild of `gld_aggregate` from `RAW.PRECOMPUTED_ACCOUNT_DAILY_USAGE` + existing tables**
-_Profiling source of truth:_ `ZOOM_AI_POC_V2.PUBLIC.DEMO_TRAIL_1_PROFILE_RESULTS` (37 rows; verified key-pair connection to `ZOOM_AI_POC_V2`, 2026-06-01)
+_Profiling source of truth:_ `ZOOM_AI_POC_V2.PUBLIC.DEMO_1_PROFILE_RESULTS` (37 rows; verified key-pair connection to `ZOOM_AI_POC_V2`, 2026-06-01)
 
 ---
 
