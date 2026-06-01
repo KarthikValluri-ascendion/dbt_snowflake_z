@@ -11,8 +11,10 @@ models:
       Gold layer regional and segment aggregate.  One row per
       (date, region, segment, is_licensed).  Consumers: dashboards,
       executive reports, BI tools.
-      Region and segment are placeholder-derived until a proper account
-      dimension table is available.
+      region / segment / is_licensed are sourced from the real account
+      dimension (brz_account_dim) via a LEFT JOIN, with a COALESCE fallback to
+      the original hash-based placeholders so environments lacking the
+      dimension (V1) still produce identical-to-before output.
     columns:
       - name: date
         description: "Reporting date"

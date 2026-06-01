@@ -2,8 +2,10 @@ version: 2
 
 sources:
   - name: ZOOM_AI_POC
-    description: "Raw interaction history tables in ZOOM_AI_POC.RAW"
-    database: ZOOM_AI_POC
+    description: "Raw interaction history tables in the target database's RAW schema."
+    # Database is parameterized so V1 (default ZOOM_AI_POC) and V2
+    # (override via SNOWFLAKE_DATABASE=ZOOM_AI_POC_V2) both resolve.
+    database: "{{ env_var('SNOWFLAKE_DATABASE', 'ZOOM_AI_POC') }}"
     schema: RAW
 
     tables:
@@ -112,4 +114,26 @@ sources:
           - name: direction
           - name: final_outcome
           - name: sla_achieved
+          - name: _loaded_at
+
+      - name: account_dim
+        description: >
+          Real account dimension (region, segment, is_licensed) — one fixed
+          row per account. Present in ZOOM_AI_POC_V2; ABSENT in V1, where the
+          gold model degrades gracefully to its hash-based placeholders.
+          NOTE: source-level tests are intentionally NOT declared here because
+          this raw table does not exist in every environment (V1). Data-quality
+          tests live on the bronze view brz_account_dim, which has an empty
+          typed fallback and therefore tests cleanly in both V1 and V2.
+        columns:
+          - name: account_id
+            description: "Account business key"
+          - name: account_name
+            description: "Human-readable account name"
+          - name: region
+            description: "Geographic region: NAMER, APAC, EMEA, LATAM"
+          - name: segment
+            description: "Customer segment code (1–5)"
+          - name: is_licensed
+            description: "True if the account holds a paid licence"
           - name: _loaded_at

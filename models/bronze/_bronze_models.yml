@@ -73,3 +73,26 @@ models:
         tests:
           - accepted_values:
               values: ['VIDEO_HISTORY']
+
+  - name: brz_account_dim
+    description: >
+      Bronze view over RAW.ACCOUNT_DIM. One row per account carrying the real
+      region / segment / is_licensed attributes. Only present in environments
+      whose RAW schema contains ACCOUNT_DIM (V2); the gold model tolerates its
+      absence in V1.
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+      - name: region
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['NAMER', 'APAC', 'EMEA', 'LATAM']
+      - name: segment
+        tests: [not_null]
+      - name: is_licensed
+        tests: [not_null]
+      - name: source_table
+        tests:
+          - accepted_values:
+              values: ['ACCOUNT_DIM']

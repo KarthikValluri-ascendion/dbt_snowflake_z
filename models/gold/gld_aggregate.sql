@@ -5,11 +5,13 @@
 --          One row per (date, region, segment, is_licensed).
 --
 -- NOTE ON REGION & SEGMENT:
---   The source data does not currently carry region or segment attributes.
---   This model uses placeholder logic (NTILE bucketing and a static region
---   list) so the pipeline runs end-to-end.
---   When a proper account-dimension / segment table is available, replace
---   the placeholder CTEs below with a join to that table.
+--   region / segment / is_licensed now come from the REAL account dimension
+--   (brz_account_dim, sourced from RAW.ACCOUNT_DIM) via a LEFT JOIN.
+--   For backward compatibility with environments where the dimension is absent
+--   (e.g. V1 / ZOOM_AI_POC, which has no ACCOUNT_DIM), each attribute falls
+--   back via COALESCE to the original hash-based placeholder expression.
+--   => V2 (dim present)  : real region / segment / is_licensed.
+--   => V1 (dim absent)   : identical-to-before hash placeholders.
 -- =============================================================================
 
 with consolidated as (
@@ -25,43 +27,43 @@ monthly as (
 
 ),
 
--- ── Placeholder region assignment ────────────────────────────────────────────
--- Assigns a region by hashing the account_id until a real dimension exists.
--- Replace this CTE with: left join dim_account on account_id
-account_region as (
+-- ── Real account dimension ───────────────────────────────────────────────────
+account_dim as (
 
-    select distinct
+    select
         account_id,
-        case mod(hash(account_id), 4)
-            when 0 then 'NAMER'
-            when 1 then 'APAC'
-            when 2 then 'EMEA'
-            else        'LATAM'
-        end             as region,
-        -- Segment encoded as numeric bucket (1–5)
-        mod(abs(hash(account_id)), 5) + 1 as segment,
-        -- Licensed flag alternates for demo purposes
-        (mod(hash(account_id), 2) = 0)    as is_licensed
-
-    from consolidated
+        region,
+        segment,
+        is_licensed
+    from {{ ref('brz_account_dim') }}
 
 ),
 
--- ── Join usage to region dimension ───────────────────────────────────────────
+-- ── Join usage to the real dimension, with hash-placeholder fallback ─────────
+-- COALESCE keeps V1 output identical to the previous hash logic when the
+-- dimension produces no matching row (LEFT JOIN -> nulls -> fallback fires).
 enriched_usage as (
 
     select
         c.report_date               as date,
-        ar.region,
-        ar.segment,
-        ar.is_licensed,
+        coalesce(d.region,
+            case mod(hash(c.account_id), 4)
+                when 0 then 'NAMER'
+                when 1 then 'APAC'
+                when 2 then 'EMEA'
+                else        'LATAM'
+            end)                                       as region,
+        coalesce(d.segment,
+            mod(abs(hash(c.account_id)), 5) + 1)       as segment,
+        coalesce(d.is_licensed,
+            (mod(hash(c.account_id), 2) = 0))          as is_licensed,
         c.account_id,
         c.active_users,
         c.phone_usage
 
     from consolidated c
-    inner join account_region ar
-        on c.account_id = ar.account_id
+    left join account_dim d
+        on c.account_id = d.account_id
     where c.window = 'R28'
 
 ),
