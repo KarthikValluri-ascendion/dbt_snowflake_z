@@ -1,0 +1,19 @@
+{
+  "jira_ticket": "Demo_Trail_1",
+  "gold_table": "gld_aggregate",
+  "source_table": "ZOOM_AI_POC.RAW.PRECOMPUTED_ACCOUNT_DAILY_USAGE",
+  "parallel_suffix": "_p",
+  "profile_table": "ZOOM_AI_POC_V2.PUBLIC.DEMO_TRAIL_1_PROFILE_RESULTS",
+  "created_date": "2026-06-01",
+  "updated_date": "2026-06-01",
+  "current_phase": 2,
+  "schema_version": 2,
+  "phases": {
+    "1_analysis_mapping": { "status": "complete", "artifact": "01_mapping_gap_analysis.md",
+                            "lineage_artifacts": ["lineage_gld_aggregate.md", "lineage_gld_aggregate.mmd", "lineage_gld_aggregate.dot", "target_lineage_gld_aggregate_v2.mmd"],
+                            "profile_table": "ZOOM_AI_POC_V2.PUBLIC.DEMO_TRAIL_1_PROFILE_RESULTS",
+                            "notes": "Re-run in merged format. Creds worked (V2). Feasibility ~100%, LOW risk, 0 hard blockers. 16 target cols: 12 direct/4 derived/0 unmapped. Sole gap GAP-01 (source governance). Cross-ref closure holds. Old 01_impact_analysis.md deleted (superseded)." },
+    "2_model_creation":   { "status": "pending", "artifact": "02_build_report.md",
+                            "models_created": [], "verification": "" }
+  }
+}

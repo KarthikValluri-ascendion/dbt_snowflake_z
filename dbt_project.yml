@@ -40,3 +40,18 @@ models:
     gold:
       +schema: GOLD
       +materialized: table
+
+# Seeds land in the RAW schema of the target database so they satisfy the
+# existing source() definitions (RAW.PHONE_HISTORY etc.). generate_schema_name
+# returns the custom schema verbatim, so +schema: RAW resolves to
+# <target_db>.RAW for whichever database the env vars point at (V1 or V2).
+seeds:
+  dbt_zoom_project:
+    +schema: RAW
+    # quote_columns: true keeps reserved-word columns (DIRECTION, IS_LICENSED)
+    # valid in the generated DDL. CSV headers are UPPERCASE so the quoted
+    # identifiers match Snowflake's default casing and existing source() SQL.
+    # Types are left to dbt's CSV inference; the bronze views cast everything
+    # (start_time -> timestamp_ntz, duration_sec -> float, sla_achieved -> bool)
+    # so RAW column types do not need to be pinned here.
+    +quote_columns: true
