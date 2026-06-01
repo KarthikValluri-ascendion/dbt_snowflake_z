@@ -7,5 +7,5 @@ logs/
 
 # local documentation / diagrams (not published to the repo)
 docs/*
-# ...except the Demo_Trail_1 run folder, published intentionally
-!docs/Demo_Trail_1/
+# ...except the demo_1 run folder, published intentionally
+!docs/demo_1/
