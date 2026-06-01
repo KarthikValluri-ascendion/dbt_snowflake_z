@@ -1,6 +1,6 @@
 -- =============================================================================
 -- MODEL: brz_email_history  (Bronze layer, materialized as VIEW)
--- SOURCE TABLE: ZCC_DB.RAW.EMAIL_HISTORY
+-- SOURCE TABLE: ZOOM_AI_POC.RAW.EMAIL_HISTORY
 -- =============================================================================
 
 with source as (

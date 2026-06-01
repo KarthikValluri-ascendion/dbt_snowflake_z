@@ -1,6 +1,6 @@
 -- =============================================================================
 -- MODEL: brz_phone_history  (Bronze layer, materialized as VIEW)
--- SOURCE TABLE: ZCC_DB.RAW.PHONE_HISTORY
+-- SOURCE TABLE: ZOOM_AI_POC.RAW.PHONE_HISTORY
 -- PURPOSE: Lightly clean the raw phone table – enforce types, rename columns
 --          to snake_case, add a source tag.  No business logic here.
 -- =============================================================================

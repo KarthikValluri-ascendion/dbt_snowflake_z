@@ -1,6 +1,6 @@
 -- =============================================================================
 -- MODEL: brz_video_history  (Bronze layer, materialized as VIEW)
--- SOURCE TABLE: ZCC_DB.RAW.VIDEO_HISTORY
+-- SOURCE TABLE: ZOOM_AI_POC.RAW.VIDEO_HISTORY
 -- =============================================================================
 
 with source as (

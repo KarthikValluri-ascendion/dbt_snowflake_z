@@ -2,3 +2,6 @@
 target/
 dbt_packages/
 logs/
+
+# local documentation / diagrams (not published to the repo)
+docs/
