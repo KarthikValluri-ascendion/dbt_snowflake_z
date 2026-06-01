@@ -1,6 +1,6 @@
 -- =============================================================================
 -- MODEL: brz_sms_history  (Bronze layer, materialized as VIEW)
--- SOURCE TABLE: ZCC_DB.RAW.SMS_HISTORY
+-- SOURCE TABLE: ZOOM_AI_POC.RAW.SMS_HISTORY
 -- =============================================================================
 
 with source as (
